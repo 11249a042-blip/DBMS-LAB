@@ -1,0 +1,137 @@
+SQL> CREATE TABLE college(
+  2  stuid NUMBER,
+  3  name VARCHAR2(20),
+  4  age NUMBER,
+  5  email VARCHAR2(30),
+  6  dept VARCHAR2(15)
+  7  );
+
+Table created.
+
+SQL> ALTER TABLE college ADD CONSTRAINT pk_college PRIMARY KEY(stuid);
+
+Table altered.
+
+SQL> DESC college;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER
+ NAME                                               VARCHAR2(20)
+ AGE                                                NUMBER
+ EMAIL                                              VARCHAR2(30)
+ DEPT                                               VARCHAR2(15)
+
+SQL> ALTER TABLE college MODIFY(name CONSTRAINT nn_name NOT NULL);
+
+Table altered.
+
+SQL> DESC college;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER
+ NAME                                      NOT NULL VARCHAR2(20)
+ AGE                                                NUMBER
+ EMAIL                                              VARCHAR2(30)
+ DEPT                                               VARCHAR2(15)
+
+SQL> ALTER TABLE college ADD CONSTRAINT uq_email UNIQUE(email);
+
+Table altered.
+
+SQL> DESC college;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER
+ NAME                                      NOT NULL VARCHAR2(20)
+ AGE                                                NUMBER
+ EMAIL                                              VARCHAR2(30)
+ DEPT                                               VARCHAR2(15)
+
+SQL> ALTER TABLE college ADD CONSTRAINT chk_age CHECK(age>=18);
+
+Table altered.
+
+SQL> ALTER TABLE college MODIFY dept DEFAULT 'CSE';
+
+Table altered.
+
+SQL> CREATE TABLE dept(
+  2  deptid NUMBER,
+  3  deptname VARCHAR2(10)
+  4  );
+
+Table created.
+
+SQL> ALTER TABLE dept ADD CONSTRAINT pk_dept PRIMARY KEY(deptid);
+
+Table altered.
+
+SQL> ALTER TABLE college ADD deptid NUMBER;
+
+Table altered.
+
+SQL> ALTER TABLE college ADD CONSTRAINT FK_COLLEGE_DEPT
+  2  FOREIGN KEY (deptid) REFERENCES dept(deptid);
+
+Table altered.
+
+SQL> INSERT INTO dept VALUES(01,'cse');
+
+1 row created.
+
+SQL> INSERT INTO dept VALUES(02,'ece');
+
+1 row created.
+
+SQL> INSERT INTO dept VALUES(03,'mech');
+
+1 row created.
+
+SQL> SELECT * FROM dept;
+
+    DEPTID DEPTNAME
+---------- ----------
+         1 cse
+         2 ece
+         3 mech
+
+SQL> INSERT INTO college VALUES(001,'BRIN',19,'brin@gmail.com','cse',1);
+
+1 row created.
+
+SQL> INSERT INTO college VALUES(002,'CHANDANA',20,'chandana@gmail.com','ece',2);
+
+1 row created.
+
+SQL> INSERT INTO college VALUES(003,'RAMYA',20,'ramya@gmail.com','mech',3);
+
+1 row created.
+
+SQL> INSERT INTO college VALUES(004,'ANU',19,'anu@gmail.com','cse',1);
+
+1 row created.
+
+SQL> SELECT * FROM dept;
+
+    DEPTID DEPTNAME
+---------- ----------
+         1 cse
+         2 ece
+         3 mech
+
+SQL> SELECT * FROM college;
+
+STUID     NAME         AGE        EMAIL                 DEPT       DEPTID
+------    ----------   ----       ------------------    ------     -------
+1         BRIN         19         brin@gmail.com        cse        1
+2         CHANDANA     20         chandana@gmail.com    ece        2
+3         RAMYA        20         ramya@gmail.com       mech       3
+4         ANU          19         anu@gmail.com         cse        1
+
+SQL> INSERT INTO college VALUES(004,'ANU',19,'anu@gmail.com','cse',4);
+
+ERROR at line 1:
+ORA-00001: unique constraint (A042.PK_COLLEGE) violated
