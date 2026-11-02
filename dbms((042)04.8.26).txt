@@ -1,0 +1,250 @@
+Enter user-name: A042@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+UNIV                           TABLE
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT7                       TABLE
+STUDENT4                       TABLE
+STUDENT                        TABLE
+STU1                           TABLE
+EMP                            TABLE
+COURSE                         TABLE
+
+9 rows selected.
+
+SQL> SELECT * FROM student8;
+
+     STUID NAME                 REG_NO     DEPARTMENT
+---------- -------------------- ---------- ----------
+         1 BRIN                 11249A042  CSE
+         2 KIRAN                043        CSE
+         3 SHRIYA                044        ECE
+         4 ASRITHA              045        MECH
+         5 SHREEYAS             046        EEE
+
+SQL> SELECT * FROM student9;
+
+no rows selected
+
+SQL> SELECT * FROM course;
+
+  COURSEID COURSENAME                STUID
+---------- -------------------- ----------
+         1 DBMS                          1
+
+SQL> CREATE TABLE stu10(
+  2  id NUMBER PRIMARY KEY,
+  3  name VARCHAR(15),
+  4  gender CHAR(1) DEFAULT 'M');
+
+Table created.
+
+SQL> DESC course;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                  NOT NULL NUMBER(38)
+ COURSENAME                                         VARCHAR2(20)
+ STUID                                              NUMBER(38)
+
+SQL> DESC student8;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER(38)
+ NAME                                               VARCHAR2(20)
+ REG_NO                                             VARCHAR2(10)
+ DEPARTMENT                                         VARCHAR2(10)
+
+SQL> ALTER TABLE student8 MODIFY department DEFAULT 'CSE';
+
+Table altered.
+
+SQL> SELECT * FROM student8;
+
+     STUID NAME                 REG_NO     DEPARTMENT
+---------- -------------------- ---------- ----------
+         1 BRIN                 11249A042  CSE
+         2 KIRAN                043        CSE
+         3 SHRIYA                044        ECE
+         4 ASRITHA              045        MECH
+         5 SHREEYAS             046        EEE
+
+SQL> INSERT INTO student8 (stuid,name,reg_no)
+  2  VALUES(06,'CHAITHANYA','00001');
+
+1 row created.
+
+SQL> SELECT * FROM student8;
+
+     STUID NAME                 REG_NO     DEPARTMENT
+---------- -------------------- ---------- ----------
+         1 BRIN                 11249A042  CSE
+         2 KIRAN                043        CSE
+         3 SHRIYA               044        ECE
+         4 ASRITHA              045        MECH
+         5 SHREEYAS             046        EEE
+         6 CHAITHANYA           00001      CSE
+
+6 rows selected.
+
+SQL> DESC stu1;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ REG_NO                                             VARCHAR2(25)
+ NAME                                               CHAR(20)
+ DOB                                                DATE
+ ADDRESS1                                           VARCHAR2(30)
+ COURSE_NAME                                        VARCHAR2(20)
+ DEPT_NAME                                          VARCHAR2(15)
+ STATE                                              CHAR(20)
+ CITY                                               CHAR(20)
+ PINCODE                                            NUMBER(10)
+
+SQL> DESC course;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ COURSEID                                  NOT NULL NUMBER(38)
+ COURSENAME                                         VARCHAR2(20)
+ STUID                                              NUMBER(38)
+
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+UNIV                           TABLE
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT7                       TABLE
+STUDENT4                       TABLE
+STUDENT                        TABLE
+STU10                          TABLE
+STU1                           TABLE
+EMP                            TABLE
+COURSE                         TABLE
+
+10 rows selected.
+
+SQL> CREATE TABLE department(
+  2  dept_id INT PRIMARY KEY,
+  3  dept_name VARCHAR(10)
+  4  );
+
+Table created.
+
+SQL> CREATE TABLE student10(
+  2  stu_id INT PRIMARY KEY,
+  3  stu_name VARCHAR(15) NOT NULL,
+  4  age INT CHECK (age>=18),
+  5  gender CHAR(1) DEFAULT 'F',
+  6  email VARCHAR(20) UNIQUE,
+  7  dept_id INT,
+  8  FOREIGN KEY (dept_id) REFERENCES department(dept_id)
+  9  );
+
+Table created.
+
+SQL> DESC department;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL NUMBER(38)
+ DEPT_NAME                                          VARCHAR2(10)
+
+SQL> DESC student10;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(38)
+ STU_NAME                                  NOT NULL VARCHAR2(15)
+ AGE                                                NUMBER(38)
+ GENDER                                             CHAR(1)
+ EMAIL                                              VARCHAR2(20)
+ DEPT_ID                                            NUMBER(38)
+
+SQL> INSERT INTO department (dept_id,dept_name) VALUES(01,'CSE');
+
+1 row created.
+
+SQL> INSERT INTO department (dept_id,dept_name) VALUES(02,'ECE');
+
+1 row created.
+
+SQL> INSERT INTO department (dept_id,dept_name) VALUES(03,'MECH');
+
+1 row created.
+
+SQL> INSERT INTO department (dept_id,dept_name) VALUES(04,'AEROSPACE');
+
+1 row created.
+
+SQL> DESC department;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ DEPT_ID                                   NOT NULL NUMBER(38)
+ DEPT_NAME                                          VARCHAR2(10)
+
+SQL> SELECT * FROM department;
+
+   DEPT_ID DEPT_NAME
+---------- ----------
+         1 CSE
+         2 ECE
+         3 MECH
+         4 AEROSPACE
+
+SQL> DESC student10;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STU_ID                                    NOT NULL NUMBER(38)
+ STU_NAME                                  NOT NULL VARCHAR2(15)
+ AGE                                                NUMBER(38)
+ GENDER                                             CHAR(1)
+ EMAIL                                              VARCHAR2(20)
+ DEPT_ID                                            NUMBER(38)
+
+SQL> SELECT * FROM student10;
+
+no rows selected
+
+SQL> INSERT INTO student10
+  2  VALUES (&stu_id,'&stu_name',&age,'&gender','&email',&dept_id);
+
+Enter value for stu_id: 001
+Enter value for stu_name: BRIN
+Enter value for age: 19
+Enter value for gender: f
+Enter value for email: brin@gmail.com
+Enter value for dept_id: 01
+
+1 row created.
+
+SQL> /
+
+Enter value for stu_id: 002
+Enter value for stu_name: KIRAN
+Enter value for age: 19
+Enter value for gender: f
+Enter value for email: kiran@gmail.com
+Enter value for dept_id: 02
+
+1 row created.
+
+SQL> SELECT * FROM student10;
+
+    STU_ID STU_NAME               AGE GENDER EMAIL                   DEPT_ID
+---------- --------------- ---------- ------ -------------------- ----------
+         1 BRIN                    19 f      brin@gmail.com                1
+         2 KIRAN                   19 f      kiran@gmail.com               2
