@@ -1,0 +1,234 @@
+Enter user-name: A042@db2021
+Enter password:
+
+Connected to:
+Oracle Database 11g Release 11.2.0.1.0 - Production
+
+SQL> SELECT * FROM TAB;
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+UNIV                           TABLE
+STUDENT9                       TABLE
+STUDENT8                       TABLE
+STUDENT7                       TABLE
+STUDENT4                       TABLE
+STUDENT10                      TABLE
+STUDENT                        TABLE
+STU10                          TABLE
+STU1                           TABLE
+ORDERS                         TABLE
+EMP                            TABLE
+
+TNAME                          TABTYPE  CLUSTERID
+------------------------------ ------- ----------
+DEPT                           TABLE
+DEPARTMENT                     TABLE
+CUSTOMER                       TABLE
+COURSE                         TABLE
+COLLEGE                        TABLE
+
+16 rows selected.
+
+SQL> CREATE TABLE stu_marks(
+  2  stuid NUMBER(9) PRIMARY KEY,
+  3  stuname VARCHAR2(20),
+  4  department VARCHAR2(10),
+  5  marks NUMBER(3)
+  6  );
+
+Table created.
+
+SQL> DESC stu_marks;
+
+ Name                                      Null?    Type
+ ----------------------------------------- -------- ----------------------------
+ STUID                                     NOT NULL NUMBER(9)
+ STUNAME                                            VARCHAR2(20)
+ DEPARTMENT                                         VARCHAR2(10)
+ MARKS                                              NUMBER(3)
+
+SQL> INSERT INTO stu_marks VALUES(01,'BRIN','CSE',98);
+
+1 row created.
+
+SQL> INSERT INTO stu_marks VALUES(02,'KIRAN','ECE',92);
+
+1 row created.
+
+SQL> INSERT INTO stu_marks VALUES(03,'SHRIYA','IT',75);
+
+1 row created.
+
+SQL> INSERT INTO stu_marks VALUES(04,'ASRITHA','CSE',67);
+
+1 row created.
+
+SQL> INSERT INTO stu_marks VALUES(05,'SHREEYAS','AEROSPACE',99);
+
+1 row created.
+
+SQL> SELECT * FROM stu_marks;
+
+     STUID STUNAME              DEPARTMENT      MARKS
+---------- -------------------- ---------- ----------
+         1 BRIN                 CSE                98
+         2 KIRAN                ECE                92
+         3 SHRIYA               IT                 75
+         4 ASRITHA              CSE                67
+         5 SHREEYAS             AEROSPACE          99
+
+SQL> SELECT COUNT(*) AS TOTAL_STUDENTS FROM stu_marks;
+
+TOTAL_STUDENTS
+--------------
+             5
+
+SQL> SELECT SUM(marks) AS total_marks FROM stu_marks;
+
+TOTAL_MARKS
+-----------
+        431
+
+SQL> SELECT AVG(marks) AS average_marks FROM stu_marks;
+
+AVERAGE_MARKS
+-------------
+         86.2
+
+SQL> SELECT MAX(marks) AS highest_marks FROM stu_marks;
+
+HIGHEST_MARKS
+-------------
+           99
+
+SQL> SELECT MIN(marks) AS lowest_marks FROM stu_marks;
+
+LOWEST_MARKS
+------------
+          67
+
+SQL> SELECT department,AVG(marks) AS avg_marks
+  2  FROM stu_marks GROUP BY DEPARTMENT;
+
+DEPARTMENT  AVG_MARKS
+---------- ----------
+IT                 75
+CSE              82.5
+AEROSPACE          99
+ECE                92
+
+SQL> SELECT department,COUNT(*) AS total_student
+  2  FROM stu_marks GROUP BY department;
+
+DEPARTMENT TOTAL_STUDENT
+---------- -------------
+IT                     1
+CSE                    2
+AEROSPACE              1
+ECE                    1
+
+SQL> INSERT INTO stu_marks VALUES(06,'LAKSHMAN','IT',77);
+
+1 row created.
+
+SQL> INSERT INTO stu_marks VALUES(07,'VISHNU','ECE',96);
+
+1 row created.
+
+SQL> SELECT department,MAX(marks) AS highest_marks
+  2  FROM stu_marks GROUP BY department;
+
+DEPARTMENT HIGHEST_MARKS
+---------- -------------
+IT                    77
+CSE                   98
+AEROSPACE             99
+ECE                   96
+
+SQL> SELECT department,stuname,MAX(marks) AS highest_marks
+  2  FROM stu_marks GROUP BY department,stuname;
+
+DEPARTMENT STUNAME              HIGHEST_MARKS
+---------- -------------------- -------------
+AEROSPACE  SHREEYAS                        99
+ECE        KIRAN                           92
+CSE        BRIN                            98
+CSE        ASRITHA                         67
+IT         SHRIYA                          75
+ECE        VISHNU                          96
+IT         LAKSHMAN                        77
+
+7 rows selected.
+
+SQL> SELECT department,AVG(marks) AS average_marks
+  2  FROM stu_marks GROUP BY department
+  3  HAVING AVG(marks)>85;
+
+DEPARTMENT AVERAGE_MARKS
+---------- -------------
+AEROSPACE             99
+ECE                   94
+
+SQL> SELECT department,COUNT(*) AS total_students
+  2  FROM stu_marks GROUP BY department
+  3  HAVING COUNT(*)=1;
+
+DEPARTMENT TOTAL_STUDENTS
+---------- --------------
+AEROSPACE               1
+
+SQL> SELECT department,COUNT(*) AS total_students
+  2  FROM stu_marks GROUP BY department
+  3  HAVING COUNT(*)>1;
+
+DEPARTMENT TOTAL_STUDENTS
+---------- --------------
+IT                      2
+CSE                     2
+ECE                     2
+
+SQL> SELECT department,COUNT(*) AS no_of_students,
+  2  AVG(marks) AS avg_marks,MAX(marks) AS highest_marks
+  3  FROM stu_marks GROUP BY department;
+
+DEPARTMENT NO_OF_STUDENTS  AVG_MARKS HIGHEST_MARKS
+---------- -------------- ---------- -------------
+IT                      2         76            77
+CSE                     2       82.5            98
+AEROSPACE               1         99            99
+ECE                     2         94            96
+
+SQL> SELECT department,COUNT(*) AS no_of_students,
+  2  AVG(marks) AS avg_marks,MAX(marks) AS highest_marks
+  3  FROM stu_marks GROUP BY department
+  4  HAVING AVG(marks)>80;
+
+DEPARTMENT NO_OF_STUDENTS  AVG_MARKS HIGHEST_MARKS
+---------- -------------- ---------- -------------
+CSE                     2       82.5            98
+AEROSPACE               1         99            99
+ECE                     2         94            96
+
+SQL> SELECT department,COUNT(*) AS no_of_students,
+  2  AVG(marks) AS avg_marks,MAX(marks) AS highest_marks
+  3  FROM stu_marks GROUP BY department
+  4  HAVING AVG(marks)<80;
+
+DEPARTMENT NO_OF_STUDENTS  AVG_MARKS HIGHEST_MARKS
+---------- -------------- ---------- -------------
+IT                      2         76            77
+
+SQL> SELECT * FROM stu_marks;
+
+     STUID STUNAME              DEPARTMENT      MARKS
+---------- -------------------- ---------- ----------
+         1 BRIN                 CSE                98
+         2 KIRAN                ECE                92
+         3 SHRIYA               IT                 75
+         4 ASRITHA              CSE                67
+         5 SHREEYAS             AEROSPACE          99
+         6 LAKSHMAN             IT                 77
+         7 VISHNU               ECE                96
+
+7 rows selected.
